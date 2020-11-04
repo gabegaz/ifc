@@ -12,11 +12,13 @@ import numpy as np
 
 from os import listdir
 from os.path import isfile, join
+import os, sys
 
 from get_data_pa_sr1 import get_data_pa_sr1
 from get_data_pa_sr2 import get_data_pa_sr2
 from get_data_pa_main_fr import get_data_pa_main_fr
 from get_data_pa_add_fr import get_data_pa_add_fr
+
 
 
 modified = 'D:/projects/IFC/second_round/data/modified/'
@@ -34,8 +36,6 @@ all_add_fr = \
 
 
 
-fd_all1 = 'D:/projects/IFC/second_round/data/original/1.2. Assessment Result Final- FDs1/'
-fd_all2 = 'D:/projects/IFC/second_round/data/original/1.2. Assessment Result Final- FDs2/'
 
 
 ##############################################################################
@@ -49,8 +49,6 @@ files_snnpr2 = [f for f in listdir(snnpr2) if isfile(join(snnpr2, f))]
 files_all_main_fr = [f for f in listdir(all_main_fr) if isfile(join(all_main_fr, f))]
 files_all_add_fr = [f for f in listdir(all_add_fr) if isfile(join(all_add_fr, f))]
 
-files_fd1 = [f for f in listdir(fd_all1) if isfile(join(fd_all1, f))]
-files_fd2 = [f for f in listdir(fd_all2) if isfile(join(fd_all2, f))]
 
 ##############################################################################################
 df_oromia = get_data_pa_sr1(oromia, files_oromia)
@@ -177,58 +175,27 @@ df_all_sr2.to_excel(modified+'assessment_result_PAs_sr.xlsx',
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# =============================================================================
 # ########################Feed Dealers########################################
-# 
-# df_fd_all1 = get_data_fd_sr1(fd_all1, files_fd1)
-# df_fd_all2 = get_data_fd_sr2(fd_all2, files_fd2)
-# 
-# df_fd_all = df_fd_all1.append(df_fd_all2, ignore_index=True)
-# 
-# df_fd_all['contact_designation'] = df_fd_all['contact_designation'].str.replace('(', '')
-# df_fd_all['contact_designation'] = df_fd_all['contact_designation'].str.replace(')', '')
-# 
-# 
-# for col in df_fd_all.columns:
-#     df_fd_all[col] = df_fd_all[col].replace('N/A', np.NaN)
-#     
-# for col in df_fd_all.columns:    
-#     df_fd_all[col] = df_fd_all[col].replace('NA', np.NaN)
-# 
-# for col in df_fd_all.columns:
-#     df_fd_all.fillna(value=np.nan, inplace=True)
-# 
-# for col in df_fd_all.columns:    
-#     df_fd_all[col] = df_fd_all[col].replace('none', np.NaN)
-#     
-# df_fd_all.sort_values(by=['pa_id'])
-# 
-# df_fd_all.to_excel(modified+'assessment_result_FDs.xlsx', 
-#                 sheet_name='FDs', index=False)
-# 
-# ############################################################################
-# 
-# =============================================================================
+sys.path.append(os.chdir('D:/projects/IFC/second_round/codes/utils'))
+from get_data_fd_sr1 import get_data_fd_sr1
+from get_data_fd_sr2 import get_data_fd_sr2
+
+fd1 = 'D:/projects/IFC/second_round/data/original/1.2. Assessment Result Final- FDs1/'
+fd2 = 'D:/projects/IFC/second_round/data/original/1.2. Assessment Result Final- FDs2/'
+files_fd1 = [f for f in listdir(fd1) if isfile(join(fd1, f))]
+files_fd2 = [f for f in listdir(fd2) if isfile(join(fd2, f))]
+
+df_fd1 = get_data_fd_sr1(fd1, files_fd1)
+df_fd2 = get_data_fd_sr2(fd2, files_fd2)
+
+df_fd = df_fd1.append(df_fd2, ignore_index=True)
+
+df_fd2 =df_fd.copy() 
+#df_fd2['employment_male'] = df_fd2['employment_male'].replace(' ', 'np.NaN')
+#df_fd2['employment_female'] = df_fd2['employment_female'].replace(' ', '')
+#df_fd2['employment_total'] = df_fd2['employment_total'].replace(' ', '')
+
+  
+df_fd2.to_excel(modified+'assessment_result_FDs.xlsx', 
+                 sheet_name='FDs', index=False)
+ 

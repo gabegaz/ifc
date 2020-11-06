@@ -345,3 +345,93 @@ rename(num_chicks_sold_total  /*
 */ turn_over_other   /*
 */ sold_to_unique_farmers)
 save "$output\assessment_result_PAs_fr_long.dta", replace
+
+
+
+
+
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+////////////////////////Feed Dealers///////////////////////
+///////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+
+import excel "$output\assessment_result_FDs.xlsx", sheet("FDs") firstrow clear
+
+foreach x of varlist business_name- agency_lender_type /* 
+*/ informal_access_loan- finance_challenge_other /*
+*/ inputs_purchase_cycle2017 inputs_sold_gk_farm2018 /*
+*/ inputs_sold_gk_total2018 sales_turnover_farm2018 /*
+*/ inputs_sold_gk_vpoult_agent2018 /*
+*/ sales_turnover_total2018 sales_turnover_vpoult_agent2018 {
+replace `x'="." if `x'==""
+}
+
+foreach x of varlist informal_amount /*
+*/ employment_male /*
+*/ employment_female /*
+*/ employment_total /*
+*/ informal_amount /*
+*/ inputs_sold_gk_farm2018 /*
+*/ inputs_sold_gk_vpoult_agent2018 /*
+*/ inputs_sold_gk_total2018 /*
+*/ sales_turnover_farm2018 /*
+*/ sales_turnover_gov_agent2017 /*
+*/ inputs_purchase_cycle2017 /*
+*/ sales_turnover_vpoult_agent2018 /*
+*/ sales_turnover_total2018 {
+
+destring `x', replace
+}
+
+reshape long /* 
+*/ inputs_purchase_cycle /*
+*/ inputs_sold_gk_farm /*
+*/ inputs_sold_gk_gov_agent /* 
+*/ inputs_sold_gk_poult_agent  /*
+*/ inputs_sold_gk_vpoult_agent  /*
+*/ inputs_sold_gk_other /*
+*/ inputs_sold_gk_total  /*
+*/ sales_turnover_farm  /*
+*/ sales_turnover_gov_agent  /*
+*/ sales_turnover_poult_agent  /*
+*/ sales_turnover_vpoult_agent  /*
+*/ sales_turnover_other /*
+*/ sales_turnover_total  /*
+*/ num_unique_farmer, i(pa_id) j(year)
+
+order region year, after(pa_id)
+
+egen vol_total = rsum(inputs_sold_gk_farm- inputs_sold_gk_other)
+egen sales_total = rsum(sales_turnover_farm- sales_turnover_other)
+
+ 
+ foreach var of varlist inputs_sold_gk_farm- inputs_sold_gk_other {
+      replace `var'=0 if vol_total==sales_turnover_total & `var'==. 
+}
+
+
+foreach var of varlist sales_turnover_farm- sales_turnover_other {
+  replace `var' = 0 if sales_total==sales_turnover_total & `var'==.
+}
+
+drop vol_total sales_total
+
+
+egen vol_total = rsum(inputs_sold_gk_farm- inputs_sold_gk_other)
+egen sales_total = rsum(sales_turnover_farm- sales_turnover_other)
+
+replace vol_total=. if inputs_sold_gk_total==.
+replace sales_total=. if sales_turnover_total==.
+
+*checking differences total and reported
+gen vol_diff = vol_total- inputs_sold_gk_total
+gen sales_diff = sales_total- sales_turnover_total
+drop vol_diff sales_diff vol_total sales_total
+*result: no differences
+
+save "$output\assessment_result_FDs_long.dta", replace
+
+
+

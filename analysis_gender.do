@@ -1,39 +1,31 @@
-gl output "D:\projects\IFC\output"
-gl tables "D:\projects\IFC\output\tables_gender"
+gl output "D:\projects\IFC\second_round\data\modified"
+gl tables "D:\projects\IFC\second_round\tables\gender"
 
-use "$output\main_scores_additional_wide.dta", clear
-
-*begin: local context
-
-tabout zone_lab region using "$tables\local_context_gender.xls" if contact_gender!=3, /// 
-c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
-
-*end: local context
-
+use "$output\assessment_result_PAs_all_wide.dta", clear
 
 *begin: Basic charactersistics of poultry agents:
 
-tabout contact_des contact_gender using "$tables\basic_characteristics_gender.xls" if contact_gender!=3, /// 
+tabout region contact_gender using "$tables\basic_characteristics_gender.xls", /// 
 c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
 
-tabout region contact_gender using  "$tables\basic_characteristics_gender.xls" if contact_gender!=3, ///
-c(freq row col) f(0c 1p 1p) layout(cb) h1(nil) h3(nil) npos(row) append 
+tabout contact_designation contact_gender using  "$tables\basic_characteristics_gender.xls", ///
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append 
 
-
-tabout legal_form contact_gender using  "$tables\basic_characteristics_gender.xls" if contact_gender!=3, ///
-c(freq row col) f(0c 1p 1p) layout(cb) h1(nil) h3(nil) npos(row) append 
-
-tabout education_level_cat contact_gender using "$tables\basic_characteristics_gender.xls" if contact_gender!=3, /// 
+tabout contact_educ_cat contact_gender using "$tables\basic_characteristics_gender.xls", /// 
 c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout legal_form contact_gender using  "$tables\basic_characteristics_gender.xls", ///
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append 
 
 *end: Basic characteristics
 
+       
 
 *begin : Fig 1...
-graph bar mgmt_capability2019 inst_comptn_strength2019   /*
-*/ business_knowledge2019 marketing_pot_opportunity2019  /*
-*/ fin_mgmt_opportunity2019 env_compliance2019  /*
-*/ average_score2019 if contact_gender!=3, over(contact_gender) /*
+graph bar mgmt_capability_score inst_competency_score   /*
+*/ bus_knowledge_score mark_potential_score  /*
+*/ fin_management_score env_compliance_score  /*
+*/ average_score, over(contact_gender) /*
 */ legend(label(1 "Mgm't Capabilities") /*
 */ label(2 "Instit. Competency & Strength") /*	
 */ label(3 "Business Knowledge") /*	
@@ -42,35 +34,33 @@ graph bar mgmt_capability2019 inst_comptn_strength2019   /*
 */ label(6 "Environmental Compliance") /*
 */ label(7 "Average Scores") symxsize(10) symysize(2)) /*
 */ ytitle("Scores (%)") /*
-*/ title("Fig 1: Scores Over Sex of Owner/Manager") /*
 */ blabel(bar, position(inside) format(%9.2f) color(white))
 *end : Fig 1....
 
 
-graph bar mgmt_capability2019 inst_comptn_strength2019   /*
-*/ business_knowledge2019 marketing_pot_opportunity2019  /*
-*/ fin_mgmt_opportunity2019 env_compliance2019  /*
-*/ average_score2019 if contact_gender!=3, over(contact_gender) /*
-*/ ytitle("Scores (%)") /*
-*/ title("Fig 1: Scores Over Sex of Owner/Manager") /*
-*/ blabel(bar, position(inside) format(%9.2f) color(white))
+
+
+
 
 
 *begin: statistical tests of scores
-foreach v of varlist mgmt_capability2019- average_score2019 {
-ttest `v'=0.50 if contact_gender==1 
+foreach v of varlist mgmt_capability_score- average_score {
+ttest `v'=0.50 if contact_gender==0
  } 
  
  
-foreach v of varlist mgmt_capability2019- average_score2019 {
-ttest `v' if contact_gender!=3, by(contact_gender) 
+ 
+ 
+ 
+ 
+foreach v of varlist mgmt_capability_score- average_score {
+ttest `v', by(contact_gender)
  }   
 *end: statistical tests of scores
 
 
-
 ///////////////////////////////////////////////////////////////////////////
-use "$output\main_scores_additional_long.dta", clear
+use "$output\assessment_result_PAs_all_long.dta", clear
 
 lab var prod_cycle "Production Cycle"
 //hist prod_cycle //check the distribution to categorize prod_cycle
@@ -78,17 +68,18 @@ lab var prod_cycle "Production Cycle"
 recode prod_cycle (0/1=0 "1-2 cycles")   /*
 */ (2/3=1 "2-3 cycles")  /*
 */ (4/8=2 "4-8 cycles")  /*
-*/ (9/10=3 "9-10 cycles"), gen(prod_cycle_cat)
+*/ (9/10=3 "9-10 cycles") /*
+*/ (11/49=4 "11+ cycles"), gen(prod_cycle_cat)
 
 order prod_cycle_cat, after(prod_cycle)
 
-tabout contact_gender prod_cycle_cat if contact_gender!=3 & year==2016 /*
+tabout contact_gender prod_cycle_cat if year==2016 /*
 */ using "$tables\prod_cycle_gender.xls", c(sum prod_cycle) sum format(1c) replace	
 
-tabout contact_gender prod_cycle_cat if contact_gender!=3 & year==2017 /*
+tabout contact_gender prod_cycle_cat if year==2017 /*
 */ using "$tables\prod_cycle_gender.xls", c(sum prod_cycle) sum format(1c) append	
 
-tabout contact_gender prod_cycle_cat if contact_gender!=3 & year==2018 /*
+tabout contact_gender prod_cycle_cat if year==2018 /*
 */ using "$tables\prod_cycle_gender.xls", c(sum prod_cycle) sum format(1c) append	
 
 *end: Number of day-old-chicks production cycles per year
@@ -107,14 +98,15 @@ tabout year contact_gender using "$tables\number_chicken_gender.xls" if contact_
 *end:Annual Turnover, cost of goods sold and gross profit
 
 
+
 *begin:Annual Turnover, cost of goods sold and gross profit
 	
 tabout year contact_gender using "$tables\sales_gender.xls" if contact_gender!=3, /*
-	*/ c(sum sales_chicks_sold_total) /*
+	*/ c(sum turn_over_total) /*
 	*/ sum format(1c) replace
 
 tabout year contact_gender using "$tables\sales_gender.xls" if contact_gender!=3, /*
-	*/ c(N sales_chicks_sold_total) /*
+	*/ c(N turn_over_total) /*
 	*/ sum format(1c) append	
 
 *end:Annual Turnover, cost of goods sold and gross profit

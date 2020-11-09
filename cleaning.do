@@ -107,9 +107,24 @@ rename region_label region
 order pa_id region
 
 
-encode contact_designation, gen(contact_designation2)
-encode contact_gender, gen(contact_gender2)
-encode legal_formation, gen(legal_formation2)
+gen contact_gender2=0 if contact_gender=="Female "
+replace contact_gender2=1 if contact_gender=="Male "
+lab define contact_gender2 0 "Female" 1 "Male"
+lab values contact_gender2 contact_gender2
+ 
+gen contact_designation2 = 1 if contact_designation=="General Manager "
+replace contact_designation2 = 2 if contact_designation=="Owner Manager"
+replace contact_designation2 = 3 if contact_designation=="Representative "
+lab define contact_designation2 1 "General Manager" 2 "Owner Manager" 3 "Represenative"
+lab val contact_designation2 contact_designation2
+
+gen legal_formation2=1 if legal_formation=="Association"
+replace legal_formation2=2 if legal_formation=="Private Limited Company"
+replace legal_formation2=3 if legal_formation=="Sole Proprietorship"
+replace legal_formation2=4 if legal_formation=="Other"
+lab define legal_formation2 1 "Association" 2 "Private Limited Company" 3 "Sole Proprietorship" 4 "Other"
+lab values legal_formation2 legal_formation2
+ 
 drop contact_designation contact_gender legal_formation
 
 rename (contact_designation2 contact_gender2 legal_formation2) (contact_designation contact_gender legal_formation)
@@ -260,16 +275,37 @@ drop region
 rename region_label region
 order pa_id region
 
+replace contact_gender="Female" if contact_gender=="Female "
+replace contact_gender="." if contact_gender=="Male/Female "
+replace contact_gender="Male" if contact_gender=="Male "
 
-encode contact_designation, gen(contact_designation2)
-encode contact_gender, gen(contact_gender2)
-encode legal_formation, gen(legal_formation2)
+gen contact_gender2=0 if contact_gender=="Female"
+replace contact_gender2=1 if contact_gender=="Male"
+lab define contact_gender2 0 "Female" 1 "Male"
+lab values contact_gender2 contact_gender2
+
+replace contact_designation="." if contact_designation=="                              "
+
+gen contact_designation2 = 1 if contact_designation=="General Manager "
+replace contact_designation2 = 2 if contact_designation=="Owner Manager"
+replace contact_designation2 = 3 if contact_designation=="Representative "
+lab define contact_designation2 1 "General Manager" 2 "Owner Manager" 3 "Represenative"
+lab val contact_designation2 contact_designation2
+
+gen legal_formation2=1 if legal_formation=="Association"
+replace legal_formation2=2 if legal_formation=="Private Limited Company"
+replace legal_formation2=3 if legal_formation=="Sole Proprietorship"
+replace legal_formation2=4 if legal_formation=="Other"
+lab define legal_formation2 1 "Association" 2 "Private Limited Company" 3 "Sole Proprietorship" 4 "Other"
+lab values legal_formation2 legal_formation2
+
 drop contact_designation contact_gender legal_formation
-
 rename (contact_designation2 contact_gender2 legal_formation2) (contact_designation contact_gender legal_formation)
 
-gen contact_educ_cat=0 if contact_educ=="None/Informal Education"
-replace contact_educ_cat=1 if contact_educ=="Primary & Junior  Secondary" 
+replace contact_educ="Primary & junior High school"  if contact_educ=="Primary & Junior  Secondary  "
+
+gen contact_educ_cat=0 if contact_educ=="None/Informal Education "
+replace contact_educ_cat=1 if contact_educ=="Primary & junior High school" 
 replace contact_educ_cat=2 if contact_educ=="High School" 
 replace contact_educ_cat=3 if contact_educ=="Certificate" 
 replace contact_educ_cat=4 if contact_educ=="Diploma" 
@@ -278,7 +314,7 @@ replace contact_educ_cat=6 if contact_educ=="Masters"
 replace contact_educ_cat=7 if contact_educ=="DVM"
 
 lab def contact_educ_cat /* 
-*/ 0 "None/Informal Education" /* 
+*/ 0 "None/Informal Education " /* 
 */ 1 "Primary & Junior  Secondary" /* 
 */ 2 "High School" /* 
 */ 3 "Certificate" /* 
@@ -345,6 +381,12 @@ rename(num_chicks_sold_total  /*
 */ turn_over_other   /*
 */ sold_to_unique_farmers)
 save "$output\assessment_result_PAs_fr_long.dta", replace
+
+
+
+
+
+
 
 
 

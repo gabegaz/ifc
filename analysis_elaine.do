@@ -4,14 +4,17 @@ set more off
 gl data   "D:\projects\IFC\second_round\data\modified" 
 gl tables "D:\projects\IFC\second_round\tables" 
 
+gl codes "D:\projects\IFC\second_round\codes" 
 
 
+do "$codes\cleaning_elaine.do"
 
 ///////////////////////First Round///////////////////////////
 use "$data\assessment_result_PAs_sr_long.dta", clear
 keep pa_id-year prod_cycle- sold_to_unique_farmers
 gen round=2
-append using "$data\assessment_result_PAs_fr_long.dta"
+
+append using "$data\assessment_result_PAs_fr_long2.dta"
 
 *begin: Number of day-old-chicks production cycles per year:
     *note: share and average computed from the excel file exported
@@ -239,7 +242,7 @@ tabout year using "$tables\num_chicks_sold_fr.xls" if round==1, /*
 use "$data\assessment_result_PAs_sr_long.dta", clear
 keep pa_id-year prod_cycle- sold_to_unique_farmers
 gen round=2
-append using "$data\assessment_result_PAs_fr_long.dta"
+append using "$data\assessment_result_PAs_fr_long2.dta"
 
 
 
@@ -475,7 +478,7 @@ tabout year using "$tables\num_chicks_sold_sr.xls" if round==2, /*
 use "$data\assessment_result_PAs_sr_long.dta", clear
 keep pa_id-year prod_cycle- sold_to_unique_farmers
 gen round=2
-append using "$data\assessment_result_PAs_fr_long.dta"
+append using "$data\assessment_result_PAs_fr_long2.dta"
 
 
 *begin: Number of day-old-chicks production cycles per year:

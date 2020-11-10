@@ -2,6 +2,8 @@ version 16.0
 set more off
 
 gl output "D:\projects\IFC\second_round\data\modified" 
+gl output "D:\projects\IFC\second_round\data\modified" 
+gl codes "D:\projects\IFC\second_round\codes" 
 
 import excel "$output\assessment_result_PAs_fr.xlsx", sheet("PAs_fr") firstrow clear
 
@@ -93,63 +95,9 @@ drop sales_total diff
 
 ////////////////////////
 //these numbers are assinged (3 for Amhara, 4 for Oromia etc.)so that the data can easly be scaled 
-gen region_label =1 if region =="Tigrai"
-replace region_label = 3 if region=="Amhara" 
-replace region_label = 4 if region=="Oromia "
-replace region_label = 7 if region=="SNNPR"
+do "$codes\utils\labelling_r1.do"
 
-lab def region_label 1 "Tigrai" 3 "Amhara" 4 "Oromia" 7 "SNNP"
-lab values region_label region_label
-label variable region_label "region label"
-
-drop region
-rename region_label region
 order pa_id region
-
-
-gen contact_gender2=0 if contact_gender=="Female "
-replace contact_gender2=1 if contact_gender=="Male "
-lab define contact_gender2 0 "Female" 1 "Male"
-lab values contact_gender2 contact_gender2
- 
-gen contact_designation2 = 1 if contact_designation=="General Manager "
-replace contact_designation2 = 2 if contact_designation=="Owner Manager"
-replace contact_designation2 = 3 if contact_designation=="Representative "
-lab define contact_designation2 1 "General Manager" 2 "Owner Manager" 3 "Represenative"
-lab val contact_designation2 contact_designation2
-
-gen legal_formation2=1 if legal_formation=="Association"
-replace legal_formation2=2 if legal_formation=="Private Limited Company"
-replace legal_formation2=3 if legal_formation=="Sole Proprietorship"
-replace legal_formation2=4 if legal_formation=="Other"
-lab define legal_formation2 1 "Association" 2 "Private Limited Company" 3 "Sole Proprietorship" 4 "Other"
-lab values legal_formation2 legal_formation2
- 
-drop contact_designation contact_gender legal_formation
-
-rename (contact_designation2 contact_gender2 legal_formation2) (contact_designation contact_gender legal_formation)
-
-gen contact_educ_cat=0 if contact_educ=="None/Informal Education"
-replace contact_educ_cat=1 if contact_educ=="Primary & Junior  Secondary" 
-replace contact_educ_cat=2 if contact_educ=="High School" 
-replace contact_educ_cat=3 if contact_educ=="Certificate" 
-replace contact_educ_cat=4 if contact_educ=="Diploma" 
-replace contact_educ_cat=5 if contact_educ=="Bachelors" 
-replace contact_educ_cat=6 if contact_educ=="Masters" 
-replace contact_educ_cat=7 if contact_educ=="DVM"
-
-
-lab def contact_educ_cat /* 
-*/ 0 "None/Informal Education" /* 
-*/ 1 "Primary & Junior  Secondary" /* 
-*/ 2 "High School" /* 
-*/ 3 "Certificate" /* 
-*/ 4 "Diploma" /* 
-*/ 5 "Bachelors" /* 
-*/ 6 "Masters" /* 
-*/ 7 "DVM"
-
-lab values contact_educ_cat contact_educ_cat
 
 save "$output\assessment_result_PAs_fr_long.dta", replace
 
@@ -260,69 +208,9 @@ drop sales_total diff
 
 
 ////////////////////////
-//these numbers are assinged (3 for Amhara, 4 fo Oromia etc.)so that the data can easly be scaled 
-gen region_label =1 if region =="Tigrai"
-replace region_label = 3 if region=="Amhara" 
-replace region_label = 4 if region=="Oromia "
-replace region_label = 7 if region=="SNNPR"
+do "$codes\utils\labelling_r2.do"
 
-lab def region_label 1 "Tigrai" 3 "Amhara" 4 "Oromia" 7 "SNNP"
-lab values region_label region_label
-label variable region_label "region label"
-
-drop region
-rename region_label region
 order pa_id region
-
-replace contact_gender="Female" if contact_gender=="Female "
-replace contact_gender="." if contact_gender=="Male/Female "
-replace contact_gender="Male" if contact_gender=="Male "
-
-gen contact_gender2=0 if contact_gender=="Female"
-replace contact_gender2=1 if contact_gender=="Male"
-lab define contact_gender2 0 "Female" 1 "Male"
-lab values contact_gender2 contact_gender2
-
-replace contact_designation="." if contact_designation=="                              "
-
-gen contact_designation2 = 1 if contact_designation=="General Manager "
-replace contact_designation2 = 2 if contact_designation=="Owner Manager"
-replace contact_designation2 = 3 if contact_designation=="Representative "
-lab define contact_designation2 1 "General Manager" 2 "Owner Manager" 3 "Represenative"
-lab val contact_designation2 contact_designation2
-
-gen legal_formation2=1 if legal_formation=="Association"
-replace legal_formation2=2 if legal_formation=="Private Limited Company"
-replace legal_formation2=3 if legal_formation=="Sole Proprietorship"
-replace legal_formation2=4 if legal_formation=="Other"
-lab define legal_formation2 1 "Association" 2 "Private Limited Company" 3 "Sole Proprietorship" 4 "Other"
-lab values legal_formation2 legal_formation2
-
-drop contact_designation contact_gender legal_formation
-rename (contact_designation2 contact_gender2 legal_formation2) (contact_designation contact_gender legal_formation)
-
-replace contact_educ="Primary & junior High school"  if contact_educ=="Primary & Junior  Secondary  "
-
-gen contact_educ_cat=0 if contact_educ=="None/Informal Education "
-replace contact_educ_cat=1 if contact_educ=="Primary & junior High school" 
-replace contact_educ_cat=2 if contact_educ=="High School" 
-replace contact_educ_cat=3 if contact_educ=="Certificate" 
-replace contact_educ_cat=4 if contact_educ=="Diploma" 
-replace contact_educ_cat=5 if contact_educ=="Bachelors" 
-replace contact_educ_cat=6 if contact_educ=="Masters" 
-replace contact_educ_cat=7 if contact_educ=="DVM"
-
-lab def contact_educ_cat /* 
-*/ 0 "None/Informal Education " /* 
-*/ 1 "Primary & Junior  Secondary" /* 
-*/ 2 "High School" /* 
-*/ 3 "Certificate" /* 
-*/ 4 "Diploma" /* 
-*/ 5 "Bachelors" /* 
-*/ 6 "Masters" /* 
-*/ 7 "DVM"
-
-lab values contact_educ_cat contact_educ_cat
 
 save "$output\assessment_result_PAs_sr_long.dta", replace
 
@@ -416,7 +304,6 @@ foreach var of varlist sales_turnover_farm- sales_turnover_other {
 }
 
 drop vol_total sales_total
-
 
 egen vol_total = rsum(inputs_sold_gk_farm- inputs_sold_gk_other)
 egen sales_total = rsum(sales_turnover_farm- sales_turnover_other)

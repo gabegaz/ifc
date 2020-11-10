@@ -7,7 +7,7 @@ gl tables "D:\projects\IFC\second_round\tables"
 gl codes "D:\projects\IFC\second_round\codes" 
 
 
-do "$codes\cleaning_elaine.do"
+do "$codes\utils\cleaning_elaine.do"
 
 ///////////////////////First Round///////////////////////////
 use "$data\assessment_result_PAs_sr_long.dta", clear
@@ -349,7 +349,6 @@ tabout year using "$tables\num_chicks_sold_sr.xls" if round==2, /*
 	*/ sum format(1c) append
 	
 *end: Number of chicks sold by year:
-
 
 
 *begin: Annual Turnover (sales revenues): 

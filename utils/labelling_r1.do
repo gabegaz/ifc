@@ -118,9 +118,9 @@ rename (region2 contact_gender2 have_license2 have_tin2 /*
 */ avail_electricity2 avail_generator2 avail_heating2 /*
 */ agency_access_loan2 agency_lender_type2 /*
 */ informal_access_loan2 informal_lender_type2) /*
-*/ (region2 contact_gender2 have_license2 have_tin2 /*
-*/ contact_designation2 legal_formation2 /*
-*/ avail_water2 avail_input_store2 /*
-*/ avail_electricity2 avail_generator2 avail_heating2 /*
-*/ agency_access_loan2 agency_lender_type2 /*
-*/ informal_access_loan2 informal_lender_type2)
+*/ (region contact_gender have_license have_tin /*
+*/ contact_designation legal_formation /*
+*/ avail_water avail_input_store /*
+*/ avail_electricity avail_generator2 avail_heating /*
+*/ agency_access_loan agency_lender_type /*
+*/ informal_access_loan informal_lender_type)

@@ -117,23 +117,173 @@ lab def contact_educ_cat /*
 
 lab values contact_educ_cat contact_educ_cat
 
+replace train_given_by="Government " if train_given_by=="Government  "
+replace train_given_by="Government " if train_given_by=="GOVERNMENT"
+replace train_given_by="No training received" if train_given_by=="No Training "
+replace train_given_by="No training received" if train_given_by=="Received no Training"
+replace train_given_by="No training received" if train_given_by=="Received no Training "
+replace train_given_by="No training received" if train_given_by=="Received no training"
+replace train_given_by="No training received" if train_given_by=="Received no Training "
+replace train_given_by="TVET" if train_given_by=="Techniquena Muya"
+gen train_given_by2=0 if train_given_by=="Government"
+replace train_given_by2=1 if train_given_by=="EthioChicken"
+replace train_given_by2=2 if train_given_by=="Farmer Association"
+replace train_given_by2=3 if train_given_by=="TVET"
+replace train_given_by2=4 if train_given_by=="NGO"
+replace train_given_by2=5 if train_given_by=="No training received "
+lab def train_given_by2 0 "Government" 1 "EthioChicken" 2 "Farmer Association" 3 "TVET" 4 "NGO" 5 "No Training Received"
+lab values train_given_by2 train_given_by2
+
+
+gen train_satisfaction2=0 if train_satisfaction=="High"
+replace train_satisfaction2=1 if train_satisfaction=="Satisfied"
+replace train_satisfaction2=2 if train_satisfaction=="Neither satisfied nor dissatisfied"
+replace train_satisfaction2=3 if train_satisfaction=="Not satisfied"
+lab def train_satisfaction2 0 "Highly satisfied" 1 "Satisfied" 2 "Neither satisfied nor dissatisfied" 3 "Not satisfied"
+lab values train_satisfaction2 train_satisfaction2
+
+replace train_decision="Association/PLC Management " if train_decision=="Association /PLC Management "
+gen train_decision2=0 if train_decision=="Association/PLC Management "
+replace train_decision2=1 if train_decision=="Technikna MUYA"
+replace train_decision2=2 if train_decision=="Jointly with Spouse "
+replace train_decision2=3 if train_decision=="Owner /Self"
+replace train_decision2=4 if train_decision=="Spouse /Father/Brother/ Sister"
+lab def train_decision2 0 "Association/PLC Management" 1 "TVET" 2 "Jointly with Spouse" 3 "Owner/Self" 4 "Spouse/Father/Sister"
+lab values train_decision2 train_decision2
+
+replace water_supply_man="Yes" if water_supply_man=="YES"
+replace water_supply_man="Yes" if water_supply_man=="yes"
+gen water_supply_man2=0 if water_supply_man=="No"
+replace water_supply_man2=1 if water_supply_man=="Yes"
+lab def water_supply_man2 0 "No" 1 "Yes"
+lab values water_supply_man2 water_supply_man2
+
+replace water_supply_woman="Yes" if water_supply_woman=="YES"
+replace water_supply_woman="Yes" if water_supply_woman=="yes"
+gen water_supply_woman2=0 if water_supply_man=="No"
+replace water_supply_woman2=1 if water_supply_man=="Yes"
+lab def water_supply_woman2 0 "No" 1 "Yes"
+lab values water_supply_woman2 water_supply_woman2
+
+gen water_supply_children2=0 if water_supply_man=="No"
+replace water_supply_children2=1 if water_supply_man=="Yes"
+lab def water_supply_children2 0 "No" 1 "Yes"
+lab values water_supply_children2 water_supply_children2
+
+gen water_supply_all2=0 if water_supply_man=="No"
+replace water_supply_all2=1 if water_supply_man=="Yes"
+lab def water_supply_all2 0 "No" 1 "Yes"
+lab values water_supply_all2 water_supply_children2
+
+
+gen source_prot_inputs2=0 if source_prot_inputs == "Dealers"
+replace source_prot_inputs2=1 if source_prot_inputs == "EthioChicken  "
+replace source_prot_inputs2=2 if source_prot_inputs == "EthioChicken and Dealer"
+replace source_prot_inputs2=3 if source_prot_inputs == "Government "
+replace source_prot_inputs2=4 if source_prot_inputs == "Government & Dealers"
+replace source_prot_inputs2=5 if source_prot_inputs == "Other Poultry Agents"
+replace source_prot_inputs2=6 if source_prot_inputs == "All"
+lab def source_prot_inputs2 0 "Dealers" 1 "EthioChicken" 2 "EthioChicken and Dealer" 3 "Government" 4 "Government and Dealer" 5 "Other Poultry Agents" 6 "All"
+lab values source_prot_inputs2 source_prot_inputs2
+
+gen get_business_advice2=0 if get_business_advice=="Cooperative"
+replace  get_business_advice2=1 if get_business_advice=="EthioChicken "
+replace get_business_advice2=2 if get_business_advice=="EthioChicken & Gov. Animal Health/Pro.."
+replace get_business_advice2=3 if get_business_advice=="Extension Workers"
+replace get_business_advice2=4 if get_business_advice=="Family  "
+replace get_business_advice2=5 if get_business_advice=="Farmer Group"
+replace get_business_advice2=6 if get_business_advice=="Friends & Neighbor"
+replace get_business_advice2=7 if get_business_advice=="Gov. Animal Health/Production Worker"
+replace get_business_advice2=8 if get_business_advice=="Private DVM"
+
+lab def get_business_advice2 0 "Cooperatives" 1 "EthioChicken" 2 "EthioChicken/Government Animal Health/Pros." /*
+*/ 3 "Extension workers" 4 "Family" 5 "Farmer Group" 6 "Friends and Neighbor" /*
+*/ 7 "Gov. Animal Health/Production Worker" 8 "Private DVM"
+lab values get_business_advice2 get_business_advice2
+
+replace access_poultry_mart="Seasonal" if access_poultry_mart=="Seasonal "
+gen access_poultry_mart2=0 if access_poultry_mart=="No"
+replace access_poultry_mart2=1 if access_poultry_mart=="Seasonal"
+replace access_poultry_mart2=2 if access_poultry_mart=="Yes"
+lab def access_poultry_mart2 0 "No access" 1 "Seasonal access" 2 "Have access"
+lab val access_poultry_mart2 access_poultry_mart2
+
+replace finance_challenge1="No Challenge " if finance_challenge1=="No challenge"
+gen finance_challenge12=0 if finance_challenge1=="Limitation of Decision Making Power"
+replace finance_challenge12=1 if finance_challenge1=="No Record Keeping Skill "
+replace finance_challenge12=2 if finance_challenge1=="No/Limited Access to Finance "
+replace finance_challenge12=3 if finance_challenge1=="Problem of Liquidity "
+replace finance_challenge12=4 if finance_challenge1=="No Challenge "
+lab def finance_challenge12 0 "Limitation of Decision Making Power" 1 "No Record Keeping Skill" 2 "No/Limited Access to Finance" 3 "Problem of Liquidity" 4 "No Challenge"
+lab values finance_challenge12 finance_challenge12
+
+
+replace finance_challenge2="No Challenge " if finance_challenge2=="No challenge"
+replace finance_challenge2="No Challenge " if finance_challenge2=="No problem"
+gen finance_challenge22=0 if finance_challenge2=="Limitation of Decision Making Power"
+replace finance_challenge22=1 if finance_challenge2=="No Record Keeping Skill "
+replace finance_challenge22=2 if finance_challenge2=="No/Limited Access to Finance "
+replace finance_challenge22=3 if finance_challenge2=="Problem of Liquidity "
+replace finance_challenge22=4 if finance_challenge2=="No Challenge "
+lab def finance_challenge22 0 "Limitation of Decision Making Power" 1 "No Record Keeping Skill" 2 "No/Limited Access to Finance" 3 "Problem of Liquidity" 4 "No Challenge"
+lab values finance_challenge22 finance_challenge22
+
+replace finance_challenge3="No Challenge " if finance_challenge3=="No challenge"
+gen finance_challenge32=0 if finance_challenge3=="Limitation of Decision Making Power"
+replace finance_challenge32=1 if finance_challenge3=="No Record Keeping Skill "
+replace finance_challenge32=2 if finance_challenge3=="No/Limited Access to Finance "
+replace finance_challenge32=3 if finance_challenge3=="Problem of Liquidity "
+replace finance_challenge32=4 if finance_challenge3=="No Challenge "
+lab def finance_challenge32 0 "Limitation of Decision Making Power" 1 "No Record Keeping Skill" 2 "No/Limited Access to Finance" 3 "Problem of Liquidity" 4 "No Challenge"
+lab values finance_challenge32 finance_challenge32
+
+replace finance_challenge4="No Challenge " if finance_challenge4=="No challenge"
+gen finance_challenge42=0 if finance_challenge4=="Limitation of Decision Making Power"
+replace finance_challenge42=1 if finance_challenge4=="No Record Keeping Skill "
+replace finance_challenge42=2 if finance_challenge4=="No/Limited Access to Finance "
+replace finance_challenge42=3 if finance_challenge4=="Problem of Liquidity "
+replace finance_challenge42=4 if finance_challenge4=="No Challenge "
+lab def finance_challenge42 0 "Limitation of Decision Making Power" 1 "No Record Keeping Skill" 2 "No/Limited Access to Finance" 3 "Problem of Liquidity" 4 "No Challenge"
+lab values finance_challenge42 finance_challenge42
+
 drop region contact_gender have_license have_tin /*
 */ contact_designation legal_formation /*
 */ avail_water avail_input_store /*
 */ avail_electricity avail_generator avail_heating /*
 */ agency_access_loan agency_lender_type /*
 */ informal_access_loan informal_lender_type /*
-*/ contact_educ
+*/ contact_educ train_given_by train_satisfaction /*
+*/ train_decision water_supply_man water_supply_woman /*
+*/ water_supply_children water_supply_all /*
+*/ source_prot_inputs get_business_advice /*
+*/ access_poultry_mart finance_challenge1 /*
+*/ finance_challenge2 finance_challenge3 /*
+*/ finance_challenge4
 
 rename (region2 contact_gender2 have_license2 have_tin2 /*
 */ contact_designation2 legal_formation2 /*
 */ avail_water2 avail_input_store2 /*
 */ avail_electricity2 avail_generator2 avail_heating2 /*
 */ agency_access_loan2 agency_lender_type2 /*
-*/ informal_access_loan2 informal_lender_type2) /*
-*/ (region2 contact_gender2 have_license2 have_tin2 /*
-*/ contact_designation2 legal_formation2 /*
-*/ avail_water2 avail_input_store2 /*
-*/ avail_electricity2 avail_generator2 avail_heating2 /*
-*/ agency_access_loan2 agency_lender_type2 /*
-*/ informal_access_loan2 informal_lender_type2)
+*/ informal_access_loan2 informal_lender_type2 /*
+*/ train_given_by2 train_satisfaction2 /*
+*/ train_decision2 water_supply_man2 water_supply_woman2 /*
+*/ water_supply_children2 water_supply_all2 /*
+*/ source_prot_inputs2 get_business_advice2 /*
+*/ access_poultry_mart2 finance_challenge12 /*
+*/ finance_challenge22 finance_challenge32 /*
+*/ finance_challenge42) /*
+*/ (region contact_gender have_license have_tin /*
+*/ contact_designation legal_formation /*
+*/ avail_water avail_input_store /*
+*/ avail_electricity avail_generator avail_heating /*
+*/ agency_access_loan agency_lender_type /*
+*/ informal_access_loan informal_lender_type /*
+*/ train_given_by train_satisfaction /*
+*/ train_decision water_supply_man water_supply_woman /*
+*/ water_supply_children water_supply_all /*
+*/ source_prot_inputs get_business_advice /*
+*/ access_poultry_mart finance_challenge1 /*
+*/ finance_challenge2 finance_challenge3 /*
+*/ finance_challenge4)
+

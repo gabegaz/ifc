@@ -209,6 +209,7 @@ drop sales_total diff
 
 ////////////////////////
 do "$codes\utils\labelling_r2.do"
+drop finance_challenge_other
 
 order pa_id region
 
@@ -232,8 +233,6 @@ use "$output\assessment_result_PAs_fr_long.dta", clear
 append using "$output\assessment_result_PAs_sr_long.dta", force
 order pa_id region round 
 save "$output\assessment_result_PAs_all_long.dta", replace
-
-      
 
 
 

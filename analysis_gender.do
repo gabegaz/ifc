@@ -18,8 +18,8 @@ tabout legal_form contact_gender using  "$tables\basic_characteristics_gender.xl
 c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append 
 
 *end: Basic characteristics
-
        
+
 
 *begin : Fig 1...
 graph bar mgmt_capability_score inst_competency_score   /*
@@ -38,25 +38,277 @@ graph bar mgmt_capability_score inst_competency_score   /*
 *end : Fig 1....
 
 
-
-
-
-
-
 *begin: statistical tests of scores
 foreach v of varlist mgmt_capability_score- average_score {
 ttest `v'=0.50 if contact_gender==0
  } 
  
  
- 
- 
- 
- 
 foreach v of varlist mgmt_capability_score- average_score {
 ttest `v', by(contact_gender)
  }   
 *end: statistical tests of scores
+
+
+
+*begin: employement by PAs
+tabout region using "$tables\employment_gender.xls", /*
+	*/ c(sum employment_male sum employment_female) /*
+	*/ sum format(1c) replace
+
+tabout region using "$tables\employment_gender.xls", /*
+	*/ c(mean employment_male mean employment_female) /*
+	*/ sum format(1c) append
+
+*end: employment by PAs
+
+
+//////////////////////beign: access to finance//////////////////////////////
+
+
+*access to finance by region
+
+
+tabout contact_gender agency_access_loan using "$tables\financial_access_overall.xls", /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+tabout contact_gender informal_access_loan using "$tables\financial_access_overall.xls", /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender agency_lender_type using "$tables\financial_access_overall.xls", /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender informal_lender_type using "$tables\financial_access_overall.xls", /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender using "$tables\financial_access_overall.xls", /*
+	*/ c(N  agency_amount /*
+	*/ mean  agency_amount/*
+	*/ median  agency_amount/*
+	*/ N  informal_amount /*
+	*/ mean  informal_amount/*
+	*/ median  informal_amount)/*
+	*/ sum format(1c) append
+
+
+
+tabout contact_gender agency_access_loan using "$tables\financial_access_region.xls" if region==1, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+tabout contact_gender agency_access_loan using "$tables\financial_access_region.xls" if region==3, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender agency_access_loan using "$tables\financial_access_region.xls" if region==4, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender agency_access_loan using "$tables\financial_access_region.xls" if region==7, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+
+tabout contact_gender informal_access_loan using "$tables\financial_access_region.xls" if region==1, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender informal_access_loan using "$tables\financial_access_region.xls" if region==3, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender informal_access_loan using "$tables\financial_access_region.xls" if region==4, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender informal_access_loan using "$tables\financial_access_region.xls" if region==7, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+////
+
+
+////////////
+tabout contact_gender agency_lender_type using "$tables\financial_lender_region.xls" if region==1, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+tabout contact_gender agency_lender_type using "$tables\financial_lender_region.xls" if region==3, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender agency_lender_type using "$tables\financial_lender_region.xls" if region==4, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender agency_lender_type using "$tables\financial_lender_region.xls" if region==7, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+
+tabout contact_gender informal_lender_type using "$tables\financial_lender_region.xls" if region==1, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender informal_lender_type using "$tables\financial_lender_region.xls" if region==3, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender informal_lender_type using "$tables\financial_lender_region.xls" if region==4, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender informal_lender_type using "$tables\financial_lender_region.xls" if region==7, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+////
+
+
+
+tabout contact_gender using "$tables\finance_borrowed.xls" if region==1, /*
+	*/ c(N  agency_amount /*
+	*/ mean  agency_amount/*
+	*/ median  agency_amount/*
+	*/ N  informal_amount /*
+	*/ mean  informal_amount/*
+	*/ median  informal_amount)/*
+	*/ sum format(1c) replace
+
+tabout contact_gender using "$tables\finance_borrowed.xls" if region==3, /*
+	*/ c(N  agency_amount /*
+	*/ mean  agency_amount/*
+	*/ median  agency_amount/*
+	*/ N  informal_amount /*
+	*/ mean  informal_amount/*
+	*/ median  informal_amount)/*
+	*/ sum format(1c) append
+
+	
+tabout contact_gender using "$tables\finance_borrowed.xls" if region==4, /*
+	*/ c(N  agency_amount /*
+	*/ mean  agency_amount/*
+	*/ median  agency_amount/*
+	*/ N  informal_amount /*
+	*/ mean  informal_amount/*
+	*/ median  informal_amount)/*
+	*/ sum format(1c) append
+
+tabout contact_gender using "$tables\finance_borrowed.xls" if region==7, /*
+	*/ c(N  agency_amount /*
+	*/ mean  agency_amount/*
+	*/ median  agency_amount/*
+	*/ N  informal_amount /*
+	*/ mean  informal_amount/*
+	*/ median  informal_amount)/*
+	*/ sum format(1c) append
+
+	
+	
+	
+	
+*challenges
+tabout contact_gender finance_challenge1 using "$tables\finance_challenge_overall.xls", /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+
+tabout contact_gender finance_challenge1 using "$tables\finance_challenge_region.xls" if region==1, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+tabout contact_gender finance_challenge1 using "$tables\finance_challenge_region.xls" if region==3, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender finance_challenge1 using "$tables\finance_challenge_region.xls" if region==4, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout contact_gender finance_challenge1 using "$tables\finance_challenge_region.xls" if region==7, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+////////////////////////////end:access to finance///////////////////////////
+
+
+
+
+//////////////////begin: training/////////////////////////////
+
+*overall for all
+tabout train_given_by contact_gender  using "$tables\training_overall.xls", /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+tabout train_satisfaction contact_gender using "$tables\training_overall.xls", /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout  train_decision contact_gender using "$tables\training_overall.xls", /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+
+*training provider
+
+tabout train_given_by contact_gender  using "$tables\training_provider_region.xls" if region==1, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+tabout train_given_by contact_gender using "$tables\training_provider_region.xls" if region==3, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout train_given_by contact_gender using "$tables\training_provider_region.xls" if region==4, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout train_given_by contact_gender using "$tables\training_provider_region.xls" if region==7, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+*satisfaction
+
+tabout train_satisfaction contact_gender using "$tables\training_satisfaction_region.xls" if region==1, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+tabout train_satisfaction contact_gender using "$tables\training_satisfaction_region.xls" if region==3, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout train_satisfaction contact_gender using "$tables\training_satisfaction_region.xls" if region==4, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout train_satisfaction contact_gender using "$tables\training_satisfaction_region.xls" if region==7, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+
+*decision maker
+
+tabout  train_decision contact_gender using "$tables\training_decision_region.xls" if region==1, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+tabout train_decision contact_gender using "$tables\training_decision_region.xls" if region==3, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout train_decision contact_gender using "$tables\training_decision_region.xls" if region==4, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout train_decision contact_gender using "$tables\training_decision_region.xls" if region==7, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+//////////////////end: training/////////////////////////////
+
+////////////begin:business advice//////////////
+tabout get_business_advice contact_gender using "$tables\business_advice_overall.xls", /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+
+tabout get_business_advice contact_gender using "$tables\business_advice_region.xls" if region==1, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+tabout get_business_advice contact_gender using "$tables\business_advice_region.xls" if region==3, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout get_business_advice contact_gender using "$tables\business_advice_region.xls" if region==4, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout get_business_advice contact_gender using "$tables\business_advice_region.xls" if region==7, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+////////////end:business advice//////////////
+
+////////////begin:market//////////////
+tabout access_poultry_mart contact_gender using "$tables\market_access_overall.xls", /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+tabout access_poultry_mart contact_gender using "$tables\market_access_region.xls" if region==1, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) replace
+
+tabout  access_poultry_mart contact_gender using "$tables\market_access_region.xls" if region==3, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout  access_poultry_mart contact_gender  using "$tables\market_access_region.xls" if region==4, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+tabout  access_poultry_mart contact_gender  using "$tables\market_access_region.xls" if region==7, /// 
+c(freq row col) f(0c 1p 1p) clab(_ _ _) layout(rb) h3(nil) append
+
+////////////end:market//////////////
+
+
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -112,54 +364,20 @@ tabout year contact_gender using "$tables\sales_gender.xls" if contact_gender!=3
 *end:Annual Turnover, cost of goods sold and gross profit
 
 
+*Correlation of Sales/Profit with legal formation
+gen association=1 if legal_formation==1
+replace association=0 if legal_formation==3
+lab def association 0 "Sole Propriotorship" 1 "Association"
+lab values association association
 
-*begin:Annual Turnover, cost of goods sold and gross profit
-	
-tabout year contact_gender using "$tables\gross_profit_gender.xls" if contact_gender!=3, /*
-	*/ c(sum gross_profit) /*
-	*/ sum format(1c) replace
-tabout year contact_gender using "$tables\gross_profit_gender.xls" if contact_gender!=3, /*
-	*/ c(N gross_profit) /*
-	*/ sum format(1c) append	
-*end:Annual Turnover, cost of goods sold and gross profit
+cd "D:\projects\IFC\second_round\tables\gender"
+asdoc ttest turn_over_total, by(association) replace
 
+use "D:\projects\IFC\first_round\output\main_scores_additional_long.dta", clear
 
+gen association=1 if legal_form==1
+replace association=0 if legal_form==4
+lab def association 0 "Sole Propriotorship" 1 "Association"
+lab values association association
 
-
-*begin: Number of chicks sold by year:
-lab var num_chicks_sold_total "Number of chicks sold"
-//check the distribution to categorize prod_cycle
-//hist num_chicks_sold_total
-
-recode num_chicks_sold_total /* 
-*/ (0/1000=0 "0-1 thausand")   /*
-*/ (1001/2000=1 "1-2 thausand") /*
-*/ (2001/3000=2 "2-3 thausand")  /*
-*/ (3001/4000=3 "3-4 thausand") /*
-*/ (4001/5000=4 "4-5 thausand") /*
-*/ (5001/6000=5 "5-6 thausand") /*
-*/ (6001/7000=6 "6-7 thausand") /*
-*/ (7001/8000=7 "7-8 thausand") /*
-*/ (8001/9000=8 "8-9 thausand") /*
-*/ (9001/10000=9 "9-10 thausand") /*
-*/ (10001/100200=10 "greater than 10 thausand") , gen(num_chicks_sold_total_cat)
-
-
-order num_chicks_sold_total_cat, after(num_chicks_sold_total)
-
-tabout year contact_gender using "$tables\num_chicks_sold_gender.xls" if contact_gender!=3, /*
-	*/ c(sum num_chicks_sold_total sum num_chicks_sold_farmer /*
-	*/sum num_chicks_sold_govt sum num_chicks_sold_trader /*
-	*/ sum num_chicks_sold_poultry sum num_chicks_sold_other) /*
-	*/ sum format(1c) replace
-
-tabout num_chicks_sold_total_cat year using "$tables\num_chicks_sold_gender.xls" if contact_gender!=3, /*
-	*/ c(N num_chicks_sold_total) sum format(1c) append
-
-tabout year contact_gender using "$tables\num_chicks_sold_gender.xls" if contact_gender!=3, /*
-	*/ c(N num_chicks_sold_total N num_chicks_sold_farmer /*
-	*/ N num_chicks_sold_govt N num_chicks_sold_trader /*
-	*/ N num_chicks_sold_poultry N num_chicks_sold_other) /*
-	*/ sum format(1c) append
-
-*end: Number of chicks sold by year:
+asdoc ttest gross_profit, by(association) rowappend

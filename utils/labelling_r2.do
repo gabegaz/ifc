@@ -7,12 +7,23 @@ lab values region2 region2
 label variable region2 "region label"
 
 replace contact_gender="Female" if contact_gender=="Female "
-replace contact_gender="." if contact_gender=="Male/Female "
+
+replace contact_gender="Male" if contact_gender=="Male/Female " & pa_id=="0993"
+replace contact_gender="Female" if contact_gender=="Male/Female " & pa_id=="0994"
+
+replace contact_gender="Male" if pa_id=="0717"
+replace contact_gender="Male" if pa_id=="1053"
+
+
 replace contact_gender="Male" if contact_gender=="Male "
 gen contact_gender2=0 if contact_gender=="Female"
 replace contact_gender2=1 if contact_gender=="Male"
 lab define contact_gender2 0 "Female" 1 "Male"
 lab values contact_gender2 contact_gender2
+
+
+
+
 
 replace contact_designation="." if contact_designation=="                              "
 gen contact_designation2 = 1 if contact_designation=="General Manager "

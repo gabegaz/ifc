@@ -7,10 +7,19 @@ lab def region2 1 "Tigrai" 3 "Amhara" 4 "Oromia" 7 "SNNP"
 lab values region2 region2
 label variable region2 "region label"
 
+
+replace contact_gender="Male " if contact_gender=="Male/Female " & pa_id=="0282"
+replace contact_gender="Male " if contact_gender=="Male/Female " & pa_id=="0308"
+
+
 gen contact_gender2=0 if contact_gender=="Female "
 replace contact_gender2=1 if contact_gender=="Male "
 lab define contact_gender2 0 "Female" 1 "Male"
 lab values contact_gender2 contact_gender2
+
+
+
+
 
 gen have_license2 = 0 if have_license=="No"
 replace have_license2 = 1 if have_license=="Yes"
@@ -121,6 +130,6 @@ rename (region2 contact_gender2 have_license2 have_tin2 /*
 */ (region contact_gender have_license have_tin /*
 */ contact_designation legal_formation /*
 */ avail_water avail_input_store /*
-*/ avail_electricity avail_generator2 avail_heating /*
+*/ avail_electricity avail_generator avail_heating /*
 */ agency_access_loan agency_lender_type /*
 */ informal_access_loan informal_lender_type)

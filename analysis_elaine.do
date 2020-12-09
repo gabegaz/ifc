@@ -469,6 +469,12 @@ tabout year using "$tables\num_chicks_sold_sr.xls" if round==2, /*
 	
 	
 	
+	
+	
+	
+	
+	
+	
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////Round 1 and 2/////////////////////////////////////////////////
@@ -504,9 +510,15 @@ tabout prod_cycle_cat year using "$tables\prod_cycle_all.xls" , /*
 
 tabout prod_cycle_cat year using "$tables\prod_cycle_all.xls" , /*
 	*/ c(mean prod_cycle) sum format(1c) append
+	
+tabout prod_cycle_cat year using "$tables\prod_cycle_all.xls" , /*
+	*/ c(median prod_cycle) sum format(1c) append
+
+tabout prod_cycle_cat year using "$tables\prod_cycle_all.xls" , /*
+	*/ c(min prod_cycle max prod_cycle) sum format(1c) append
 
 
-
+	
 recode prod_cycle (0=0 "No prod cycle")   /*
 */ (1=1 "1 prod cycle")  /*
 */ (2=2 "2 prod cycles")  /*
@@ -525,6 +537,18 @@ tabout prod_cycle_cat2 year using "$tables\prod_cycle_all2.xls" , /*
 	
 tabout prod_cycle_cat2 year using "$tables\prod_cycle_all2.xls" , /*
 	*/ c(N prod_cycle) sum format(1c) append
+
+
+tabout prod_cycle_cat2 year using "$tables\prod_cycle_all2.xls" , /*
+	*/ c(mean prod_cycle) sum format(1c) append
+
+
+tabout prod_cycle_cat2 year using "$tables\prod_cycle_all2.xls" , /*
+	*/ c(median prod_cycle) sum format(1c) append
+
+tabout prod_cycle_cat2 year using "$tables\prod_cycle_all2.xls" , /*
+	*/ c(min prod_cycle max prod_cycle) sum format(1c) append
+
 
 	
 	/*
@@ -584,8 +608,28 @@ tabout year using "$tables\num_chicks_sold_all.xls" , /*
 	*/ mean num_chicks_sold_gov_agent mean num_chicks_sold_trader /*
 	*/ mean num_chicks_sold_vill_agents mean num_chicks_sold_other) /*
 	*/ sum format(1c) append
+
+	
+	
+*share of PAs selling 50 percent of revenue from farmers	
+gen share_farmers = turn_over_farm/ turn_over_total	
+
+tabout year using "$tables\num_chicks_sold_all.xls" if share_farmers>0.5, /*
+	*/ c(N num_chicks_sold_total N num_chicks_sold_farm /*
+	*/ N num_chicks_sold_gov_agent N num_chicks_sold_trader /*
+	*/ N num_chicks_sold_vill_agents N num_chicks_sold_other) /*
+	*/ sum format(1c) append
+	
+	
+	
+	
 	
 *end: Number of chicks sold by year:
+
+
+
+
+
 
 
 
@@ -619,6 +663,8 @@ tabout year using "$tables\annual_turnover_all.xls" , /*
 	*/ N turn_over_gov_agent N turn_over_trader /*
 	*/ N turn_over_vill_agents N turn_over_other) /*
 	*/ sum format(1c) append
+	
+
 	
 *end: Annual Turnove: 
 /*
@@ -701,3 +747,55 @@ tabout year using "$tables\num_chicks_sold_all.xls" , /*
 	*/ N num_chicks_sold_gov_agent N num_chicks_sold_trader /*
 	*/ N num_chicks_sold_vill_agents N num_chicks_sold_other) /*
 	*/ sum format(1c) append
+
+	
+**share of PAs selling 50 percent of revenue from farmers	
+ 
+tabout year using "$tables\num_chicks_sold_all.xls" , /*
+	*/ c(N num_chicks_sold_total N num_chicks_sold_farm /*
+	*/ N num_chicks_sold_gov_agent N num_chicks_sold_trader /*
+	*/ N num_chicks_sold_vill_agents N num_chicks_sold_other) /*
+	*/ sum format(1c) append
+
+tabout year using "$tables\num_chicks_sold_all.xls" if share_farmers>0.5 , /*
+	*/ c(N num_chicks_sold_total N num_chicks_sold_farm /*
+	*/ N num_chicks_sold_gov_agent N num_chicks_sold_trader /*
+	*/ N num_chicks_sold_vill_agents N num_chicks_sold_other) /*
+	*/ sum format(1c) append
+	
+	
+	
+use "$data\assessment_result_PAs_all_wide.dta", clear
+gen greater_than_50=1 if average_score>=0.5
+replace greater_than_50=0 if greater_than_50==.
+
+gen greater_than_75=1 if average_score>=0.75
+replace greater_than_75=0 if greater_than_75==.
+
+
+tabout greater_than_50 using "$tables\performance_indicators.xls" , /*
+	*/ c(N average_score) /*
+	*/ sum format(1c) replace
+
+
+tabout greater_than_75 using "$tables\performance_indicators.xls" , /*
+	*/ c(N average_score) /*
+	*/ sum format(1c) append
+	
+	
+kdensity average_score
+/////////////////////////////////
+
+gen indicator=0 if average_score<=0.5
+replace indicator=1 if (average_score>0.5 & average_score<=0.6)
+replace indicator=2 if (average_score>0.6 & average_score<=0.7)
+replace indicator=3 if average_score>0.7
+
+lab def indicator 0 "Needs significant change" 1 "Needs improvement" 2 "Good performance, yet needs improvement" 3 "Reliable performance"
+lab values indicator indicator 
+
+
+tabout indicator using "$tables\performance_indicators.xls" , /*
+	*/ c(N average_score) /*
+	*/ sum format(1c) append
+

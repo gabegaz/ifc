@@ -224,14 +224,22 @@ order pa_id region prod*18 prod*17 prod*16 num_chicks*2018 turn_over*2018 /*
 save "$output\assessment_result_PAs_sr_wide.dta", replace
 
 
+
+
+
 use "$output\assessment_result_PAs_fr_wide.dta", clear
 append using "$output\assessment_result_PAs_sr_wide.dta", force
-order pa_id region round 
+order pa_id region round
+ 
+do "$codes\utils\labelling_scores.do"
 save "$output\assessment_result_PAs_all_wide.dta", replace
 
 use "$output\assessment_result_PAs_fr_long.dta", clear
 append using "$output\assessment_result_PAs_sr_long.dta", force
 order pa_id region round 
+do "$codes\utils\labelling_scores.do"
+do "$codes\utils\variable_label_long.do"
+
 save "$output\assessment_result_PAs_all_long.dta", replace
 
 
